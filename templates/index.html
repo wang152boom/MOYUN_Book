@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/index/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    <noscript>
+        <link rel="stylesheet" href="../static/assets/index/css/noscript.css"/>
+    </noscript>
+</head>
+<script>
+function student(){
+	document.getElementById("demo").innerHTML="我的身份是：学生";
+	// 获取表单元素
+    var formElement = document.getElementById("registerForm");
+    var inputElement = formElement.elements["role"];
+
+    // 修改输入字段的值
+    inputElement.value = "student";
+}
+function tutor(){
+	document.getElementById("demo").innerHTML="我的身份是：导师";
+	// 获取表单元素
+    var formElement = document.getElementById("registerForm");
+    var inputElement = formElement.elements["role"];
+
+    // 修改输入字段的值
+    inputElement.value = "teacher";
+}
+</script>
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    <div class="flask-info">
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Header -->
+    <header id="header">
+
+        <div class="content">
+            <div class="inner">
+                <h1>“墨韵”读书分享平台</h1>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#login">登录|注册</a></li>
+            </ul>
+        </nav>
+        <div class="rite">
+            <p class="indent">“墨韵”是一个在线读书分享交流平台</p>
+            <p>同时这也是我们小组的软件工程实习任务</p>
+            <p>如有疑问，请访问我们如下github网址</p>
+            <p>Github Repo:<a href="https://github.com/wang152boom/MOYUN_Book.git">MoYun</a></p>
+            <!--<p>把2个公开的HTML5模板修改为Jinja2模板，并使用JavaScript实现部分页面的Ajax需求</p>
+            <p class="indent">前端</p>
+            <p>HTML5;CSS3;JavaScript(Ajax);Jinja2</p>
+            <p class="indent">后端</p>
+            <p>Python 3.11.3;Flask;MySQL(pymysql)</p> -->
+        </div>
+    </header>
+
+    <!-- Main -->
+    <div id="main">
+
+
+        <!-- Login -->
+        <article id="login">
+            <h2 class="major">登录</h2>
+            <!--<span class="image main"><img src="../static/images/index/login.png" alt="login"/></span>-->
+            <form method="post" action="/">
+                <div class="login field">
+                    <label for="account">账号/Account:</label>
+                    <input type="text" name="account" id="account"/>
+                </div>
+                <div class="password field">
+                    <label for="password">密码/Password:</label>
+                    <input type="password" name="password" id="password"/>
+                </div>
+                <div class="actions">
+                    <br>
+                    <input type="submit" value="登录" class="primary"/>
+                    <button type="button" onclick="location.href='#register'">注册</button>
+                    <!--<input type="reset" value="清空"/>-->
+                </div>
+            </form>
+            <p><a href="#findPasswd">忘记密码？</a></p>
+        </article>
+
+        <!-- Register -->
+        <article id="register">
+            <h2 class="major">注册</h2>
+            <form id="registerForm" method="post" action="/register">
+                <div class="account field">
+                    <label for="account">账号/Account:</label>
+                    <input type="text" name="account" id="account"/>
+                </div>
+                <div class="password field">
+                    <label for="password">密码/Password:</label>
+                    <input type="password" name="password" id="password"/>
+                </div>
+                <div class="email field">
+                    <label for="email">电子邮箱/E-mail:</label>
+                    <input type="email" name="email" id="email"/>
+                </div>
+                <div class="telephone field">
+                    <label for="telephone">联系电话/Tel:</label>
+                    <input type="tel" name="telephone" id="telephone"/>
+                </div>
+                <div class="actions">
+                    <label for="telephone">学生或老师/studentOrteacher:</label>
+                    <p id="demo">请选择你的身份</p>
+                    <input type="hidden" name="role" id="role"/>
+                    <button type="button" onclick="student()">学生</button>
+                    <button type="button" onclick="tutor()">导师</button>
+                </div>
+                <div class="actions" style="margin: 10px">
+                    <br>
+                    <input type="submit" value="注册" class="primary"/>
+                    <input type="reset" value="清空"/>
+                </div>
+            </form>
+        </article>
+
+        <!-- Find Password -->
+        <article id="findPasswd">
+            <h2 class="major">找回密码</h2>
+            <form method="post" id="sendCaptcha" action="/sendCaptcha">
+                <p>我们将会向您的预留邮箱发送一条验证码，请注意查收。</p>
+                <div class="account field">
+                    <label for="account">账号/Account:</label>
+                    <input type="text" name="account" id="account"/>
+                </div>
+                <div class="actions">
+                    <br>
+                    <input type="submit" value="获取验证码" class="primary"/>
+                </div>
+            </form>
+        </article>
+
+        <!-- Reset Password -->
+        <article id="resetPasswd">
+            <form method="post" action="/resetPasswd">
+                <div>
+                    <label for="password">验证码/Captcha:</label>
+                    <label for="captcha"></label><input type="text" name="captcha" id="captcha"/>
+                </div>
+                <div class="password field">
+                    <label for="password">新密码/New Password:</label>
+                    <input type="password" name="password" id="password"/>
+                </div>
+                <div class="actions">
+                    <br>
+                    <input type="submit" value="修改密码" class="primary" id=""/>
+                </div>
+            </form>
+        </article>
+
+    </div>
+
+</div>
+
+<!-- BG -->
+<div id="bg"></div>
+
+<!-- Scripts -->
+<script src="../static/assets/index/js/jquery.min.js"></script>
+<script src="../static/assets/index/js/browser.min.js"></script>
+<script src="../static/assets/index/js/breakpoints.min.js"></script>
+<script src="../static/assets/index/js/util.js"></script>
+<script src="../static/assets/index/js/main.js"></script>
+
+
+</body>
+
+</html>

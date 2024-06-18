@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>墨韵 - 消息中心</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_dark.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    <div class="flask-info" id="flask-info">
+        {% for message in get_flashed_messages() %}
+            <div class="alert" id="flask-info-content">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Header -->
+    <header id="header">
+        <h1><a href="/home" style="font-family: 楷体,system-ui">墨 韵</a></h1>
+        <nav class="links">
+            <ul>
+                <li><a href="/home">主页</a></li>
+                <li><a href="/journalMenu">书评</a></li>
+                <li><a href="/bookMenu">书籍</a></li>
+                <li><a href="/groupMenu">圈子</a></li>
+                <li><a href="/message">消息</a></li>
+            </ul>
+        </nav>
+        <nav class="main">
+            <ul>
+                <li class="profile">
+                    <a class="image" href="/profile/{{ loginUser['id'] }}">
+                        <img src="{{ loginUser['profilePhoto'] }}" width="50%"
+                             style="margin-left: 25%;margin-top: 15%;border-radius: 50%;" alt="个人主页">
+                    </a>
+                </li>
+                <li class="search">
+                    <a class="fa-search" href="#search">Search</a>
+                    <form id="search" method="get" action="/search">
+                        <label>
+                            <input type="hidden" name="type" value="all">
+                            <input type="text" name="keyword" placeholder="搜索"/>
+                        </label>
+                    </form>
+                </li>
+                <li class="menu">
+                    <a class="fa-bars" href="#menu">Menu</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Menu -->
+    <section id="menu">
+        <!-- Links -->
+        <section>
+            <ul class="links">
+                <li>
+                    <h2>菜单</h2>
+                </li>
+                <li>
+                    <a href="/home">
+                        <h3>主页</h3>
+                        <p>看看有什么新闻吧</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/editProfile">
+                        <h3>修改个人信息</h3>
+                        <p>完善个人信息，别人更快认识你</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/journalMenu">
+                        <h3>书评页</h3>
+                        <p>看看大家讨论什么最火热</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/writeJournal">
+                        <h3>写书评</h3>
+                        <p>向别人分享自己的想法吧</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/bookMenu">
+                        <h3>书籍页</h3>
+                        <p>读一本好书，就是在和高尚的人谈话</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/groupMenu">
+                        <h3>圈子</h3>
+                        <p>欢迎加入我们的读书讨论圈子</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/message">
+                        <h3>消息中心</h3>
+                        <p>不要错过重要信息和精彩内容</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout"><h3>退出账号</h3></a>
+                </li>
+            </ul>
+        </section>
+    </section>
+
+    <!-- Main -->
+    <div id="main">
+        <h2 class="title">消息中心</h2>
+        <div class="mini-posts">
+            <!-- Posts -->
+            <h3>书评回复</h3>
+            {% for journalID in journals.keys() %}
+                <article class="mini-post" style="margin: 15px">
+                    <header>
+                        <h3><a href="/journal/{{ journalID }}">{{ journalInfo[journalID]['title'] }}</a></h3>
+                        <div class="meta">
+                            {% for comment in journals[journalID] %}
+                                <p><a href="/profile/{{ comment['authorID'] }}">{{ comment['account'] }}</a>:<i
+                                        style="font-family: 楷体,system-ui">{{ comment['content'] }}</i>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </header>
+                </article>
+            {% endfor %}
+            <h3>圈子新帖</h3>
+            {% for groupID in groups.keys() %}
+                <article class="mini-post" style="margin: 15px">
+                    <header>
+                        <h3><a href="/group/{{ groupID }}">{{ groupInfo[groupID]['name'] }}</a></h3>
+                        <div class="meta">
+                            {% for discussion in groups[groupID] %}
+                                <p><a href="/profile/{{ discussion['posterID'] }}">{{ discussion['account'] }}</a>:<i
+                                        style="font-family: 楷体,system-ui;">{{ discussion['content'] }}</i>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </header>
+                </article>
+            {% endfor %}
+            <h3>帖子回复</h3>
+            {% for discussionID in discussions.keys() %}
+                <article class="mini-post" style="margin: 15px">
+                    <header>
+                        <h3>
+                            <a href="/discussion/{{ discussionID }}">{{ discussionInfo[discussionID]['title'] }}</a>
+                        </h3>
+                        <div class="meta">
+                            {% for reply in discussions[discussionID] %}
+                                <p><a href="/profile/{{ reply['authorID'] }}">{{ reply['account'] }}</a>:<i
+                                        style="font-family: 楷体,system-ui;">{{ reply['content'] }}</i>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </header>
+                </article>
+            {% endfor %}
+            <h3>私信</h3>
+            {% for senderID in chats.keys() %}
+                <article class="mini-post" style="margin: 15px">
+                    <header>
+                        <h3><a href="/chat/{{ senderID }}">{{ chats[senderID][0]['account'] }}</a></h3>
+                        <div class="meta">
+                            <p>您有{{ chats[senderID] | length }}条未读私信</p>
+                        </div>
+                    </header>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- Mini Posts -->
+        <section>
+            <div class="mini-posts">
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3>书评回复</h3>
+                        <p>{{ journals.keys() | length }}篇书评有新回复</p>
+                    </header>
+                </article>
+
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3>新帖</h3>
+                        <p>{{ groups.keys() | length }}个未读新帖</p>
+                    </header>
+                </article>
+
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3>帖子回复</h3>
+                        <p>{{ discussions.keys() | length }}篇帖子有新回复</p>
+                    </header>
+                </article>
+
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3>私信</h3>
+                        <p>{{ chats.keys() | length }}个人向你发来新私信</p>
+                    </header>
+                </article>
+            </div>
+        </section>
+    </section>
+</div>
+
+<!-- Scripts -->
+<script src="../static/assets/home/js/jquery.min.js"></script>
+<script src="../static/assets/home/js/browser.min.js"></script>
+<script src="../static/assets/home/js/breakpoints.min.js"></script>
+<script src="../static/assets/home/js/util.js"></script>
+<script src="../static/assets/home/js/main.js"></script>
+
+</body>
+
+</html>
