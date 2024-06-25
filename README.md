@@ -25,6 +25,10 @@
 * 自定义Error页面
 * 消息中心：整合书评回复、圈子新帖、帖子回复、私信等消息
 
+### 功能展示视频
+
+[“墨韵”功能展示——bilibili投稿视频](https://www.bilibili.com/video/BV1km421V7si/?vd_source=47d85ca9233479ae7de003b30ac94cae)
+
   
 ### 运行环境
 
